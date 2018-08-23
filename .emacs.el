@@ -10,7 +10,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Specify the ycmd server command and path to the ycmd directory *inside* the
 ;; cloned ycmd directory
-(defvar my:ycmd-server-command '("python" "/home/nils/Research/ycmd/ycmd"))
+(defvar my:ycmd-server-command '("python" "/usr/bin/ycmd"))
 (defvar my:ycmd-extra-conf-whitelist '("~/.ycm_extra_conf.py"))
 (defvar my:ycmd-global-config "~/.ycm_extra_conf.py")
 ;; In order to get python code completion with ycmd+jedi you must specify
@@ -22,11 +22,10 @@
 
 ;; Specify the jupyter executable name, and the start dir of the server
 (defvar my:jupyter_location (executable-find "jupyter"))
-(defvar my:jupyter_start_dir "/home/nils")
+(defvar my:jupyter_start_dir "/home/song")
 
 ;; Compilation command for C/C++
-(defvar my:compile-command "clang++ -Wall -Wextra -std=c++14 ")
-
+(defvar my:compile-command "clang++ -Wall -Wextra -std=c++11 ") 
 ;; Which theme to use. Either: spacemacs-dark, or sourcerer
 (defvar my:use-theme "spacemacs-dark")
 
@@ -39,6 +38,8 @@
 ;;       being set to nil during compilation that I haven't figured out
 ;;       how to fix yet.
 (defvar my:use-evil-mode nil)
+
+(setq evil-want-integration nil)
 
 ;; Set my:byte-compile-init to t if you want to compile the init file.
 ;; This will improve startup time by ~2-3 times, but makes getting certain
@@ -1438,7 +1439,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 
 ;; Hide the scroll bar
 (scroll-bar-mode -1)
-(defvar my-font-size 90)
+
+;(defvar my-font-size 90)
+(defvar my-font-size 110)
 ;; Make mode bar small
 (set-face-attribute 'mode-line nil  :height my-font-size)
 ;; Set the header bar font
@@ -1610,6 +1613,9 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; evil-mode: Emacs Vi Layer to use Vi/Vim keybindings in Emacs.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;(setq evil-want-integration nil)
+
 (when my:use-evil-mode
   (use-package evil
     :ensure t
@@ -1677,3 +1683,64 @@ Please set my:ycmd-server-command appropriately in ~/.emacs.el.\n"
 
 (provide '.emacs)
 ;;; .emacs ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (flycheck-ycmd company-ycmd ycmd zzz-to-char yasnippet-snippets yapfify yaml-mode writegood-mode window-numbering which-key wgrep web-mode vlf visual-regexp-steroids use-package string-inflection ssh spacemacs-theme rust-mode rtags ripgrep realgud rainbow-delimiters powerline origami org-evil org-ac neotree multiple-cursors modern-cpp-font-lock magithub magit-gerrit json-mode ido-select-window hungry-delete google-c-style gitignore-mode git-gutter git flyspell-correct-ivy flycheck-rust flycheck-pyflakes evil-leader evil-collection esup elpy ein edit-server diminish cuda-mode counsel-projectile counsel-etags cmake-mode cmake-ide clang-format beacon autopair auto-package-update auctex afternoon-theme ac-clang))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(which-func ((t (:foreground "#8fb28f")))))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; set evil leader
+(require 'evil-leader)
+(global-evil-leader-mode)
+(evil-leader/set-leader ",")
+(evil-leader/set-key
+  "e" 'find-file
+  "b" 'switch-to-buffer
+  "k" 'kill-buffer
+  "o" 'switch-to-next-buffer)
+
+; vim evil mode
+;(setq evil-want-integration nil)
+(require 'evil)
+(when (require 'evil-collection nil t)
+  (evil-collection-init))
+(evil-mode 1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(with-eval-after-load 'evil-maps
+                      (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
+                      (define-key evil-motion-state-map (kbd ";") 'evil-ex))
+
+;;(require 'rtags) ;; optional, must have rtags installed
+;;(cmake-ide-setup)
+
+
+;; define the global key to swith window
+;(global-set-key (kbd "C-x <up>") 'windmove-up)
+;(global-set-key (kbd "C-x <down>") 'windmove-down)
+;(global-set-key (kbd "C-x <left>") 'windmove-left)
+;(global-set-key (kbd "C-x <right>") 'windmove-right)
+
+(global-set-key (kbd "C-k") 'windmove-up)
+(global-set-key (kbd "C-j") 'windmove-down)
+(global-set-key (kbd "C-h") 'windmove-left)
+(global-set-key (kbd "C-l") 'windmove-right)
+
+
+
+(global-linum-mode 1) ; alway show line numbers
+
+
+
+(require 'yasnippet)
